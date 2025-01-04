@@ -45,7 +45,7 @@
 | 0.1.1           | 0.1.1                   | 0.1.1                   |
 | 0.1.0           | 0.1.0                   | 0.1.0                   |
 
-**`alatka-messages`、`alatka-dependencies`、`alatka`相关制品已上传至阿里云仓库，如需下载可进行如下配置：: point_right: [maven引入相关依赖](https://gitee.com/asuka2001/alatka-messages/wikis/%E4%BA%94%E3%80%81%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/9.maven%E5%BC%95%E5%85%A5%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96) **
+`alatka-messages`、`alatka-dependencies`、`alatka`相关制品已上传至阿里云仓库，如需下载可进行如下配置：:point_right: [maven引入相关依赖](https://gitee.com/asuka2001/alatka-messages/wikis/%E4%BA%94%E3%80%81%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/9.maven%E5%BC%95%E5%85%A5%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96)
 
 ### [ :point_right: 访问wiki查看更多教程](https://gitee.com/asuka2001/alatka-messages/wikis)
 
