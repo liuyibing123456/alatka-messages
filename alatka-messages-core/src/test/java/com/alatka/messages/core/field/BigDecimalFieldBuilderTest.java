@@ -97,7 +97,7 @@ public class BigDecimalFieldBuilderTest {
     void test11() {
         byte[] bytes = "1624".getBytes();
         FieldDefinition fieldDefinition = new FieldDefinition();
-        fieldDefinition.setPattern("U2");
+        fieldDefinition.setPattern("P2");
         BigDecimal number = fieldBuilder.toObjectWithAscii(bytes, fieldDefinition);
         Assertions.assertEquals(new BigDecimal("16.24"), number);
     }
@@ -107,7 +107,7 @@ public class BigDecimalFieldBuilderTest {
     void test12() {
         byte[] bytes = "16241".getBytes();
         FieldDefinition fieldDefinition = new FieldDefinition();
-        fieldDefinition.setPattern("U3S2");
+        fieldDefinition.setPattern("P3S2");
         BigDecimal number = fieldBuilder.toObjectWithAscii(bytes, fieldDefinition);
         Assertions.assertEquals(new BigDecimal("16.24"), number);
     }
@@ -117,7 +117,7 @@ public class BigDecimalFieldBuilderTest {
     void test13() {
         BigDecimal number = new BigDecimal("16.241");
         FieldDefinition fieldDefinition = new FieldDefinition();
-        fieldDefinition.setPattern("U3S2");
+        fieldDefinition.setPattern("P3S2");
         byte[] bytes = fieldBuilder.fromObjectToAscii(number, fieldDefinition);
         Assertions.assertEquals("3136323430", BytesUtil.bytesToHex(bytes));
     }
@@ -127,7 +127,7 @@ public class BigDecimalFieldBuilderTest {
     void test14() {
         BigDecimal number = new BigDecimal("16.24");
         FieldDefinition fieldDefinition = new FieldDefinition();
-        fieldDefinition.setPattern("U2");
+        fieldDefinition.setPattern("P2");
         byte[] bytes = fieldBuilder.fromObjectToAscii(number, fieldDefinition);
         Assertions.assertEquals("31363234", BytesUtil.bytesToHex(bytes));
     }

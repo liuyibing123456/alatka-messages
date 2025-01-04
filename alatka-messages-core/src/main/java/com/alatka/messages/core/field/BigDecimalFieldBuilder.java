@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class BigDecimalFieldBuilder extends NumberFieldBuilder<BigDecimal> {
 
-    private final Pattern pattern = Pattern.compile("^(U[0-9]+)(S[0-9]+)?([A-Z]{2})?");
+    private final Pattern pattern = Pattern.compile("^(P[0-9]+)(S[0-9]+)?([A-Z]{2})?");
 
     @Override
     protected byte[] fromObjectToAscii(BigDecimal value, FieldDefinition fieldDefinition) {
