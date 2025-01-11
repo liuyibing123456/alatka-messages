@@ -78,21 +78,11 @@ public class FieldDefinitionTest {
     @DisplayName("MessageDefinition.ParseType")
     void test07() {
         FieldDefinition.ParseType[] values = FieldDefinition.ParseType.values();
-        String[] array = {"ASCII", "EBCDIC", "BCD", "BINARY", "NONE", "NONE_V2"};
+        String[] array = {"ASCII", "EBCDIC", "BCD", "BINARY", "NONE"};
         Assertions.assertEquals(array.length, values.length);
         for (int i = 0; i < array.length; i++) {
             Assertions.assertEquals(array[i], values[i].name());
         }
     }
 
-    @Test
-    @DisplayName("MessageDefinition.ParseType.LPT")
-    void test08() {
-        FieldDefinition.ParseType.LPT[] values = FieldDefinition.ParseType.LPT.values();
-        String[] array = {"A", "B"};
-        Assertions.assertEquals(array.length, values.length);
-        for (int i = 0; i < array.length; i++) {
-            Assertions.assertEquals(array[i], values[i].name());
-        }
-    }
 }

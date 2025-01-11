@@ -40,7 +40,7 @@ public class LVDomainParsedTest {
     @Test
     @DisplayName("pack() raw()==false")
     void test04() {
-        FieldDefinition fieldDefinition = new FieldDefinition();
+        IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
         fieldDefinition.setParseType(FieldDefinition.ParseType.EBCDIC);
         fieldDefinition.setLength(1);
         byte[] bytes = BytesUtil.hexToBytes("102E3849");
@@ -50,8 +50,21 @@ public class LVDomainParsedTest {
     }
 
     @Test
-    @DisplayName("unpack() 数据域超长")
+    @DisplayName("pack() bcd")
     void test05() {
+        IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
+        fieldDefinition.setParseType(FieldDefinition.ParseType.BCD);
+        fieldDefinition.setClassType(Integer.class);
+        fieldDefinition.setLength(1);
+        byte[] bytes = BytesUtil.hexToBytes("01030904");
+
+        byte[] pack = domainParsed.pack(bytes, fieldDefinition);
+        Assertions.assertEquals(BytesUtil.bytesToHex(pack), "0801030904");
+    }
+
+    @Test
+    @DisplayName("unpack() 数据域超长")
+    void test06() {
         IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
         fieldDefinition.setParseType(FieldDefinition.ParseType.EBCDIC);
         fieldDefinition.setFixed(false);
@@ -65,7 +78,7 @@ public class LVDomainParsedTest {
 
     @Test
     @DisplayName("unpack() raw()==true")
-    void test06() {
+    void test07() {
         IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
         fieldDefinition.setParseType(FieldDefinition.ParseType.BCD);
         fieldDefinition.setClassType(String.class);
@@ -80,13 +93,27 @@ public class LVDomainParsedTest {
 
     @Test
     @DisplayName("unpack() raw()==false")
-    void test07() {
+    void test08() {
         IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
         fieldDefinition.setParseType(FieldDefinition.ParseType.EBCDIC);
         fieldDefinition.setFixed(false);
         fieldDefinition.setLength(1);
         fieldDefinition.setMaxLength(5);
         byte[] bytes = BytesUtil.hexToBytes("051E2E3E4E5E");
+        AtomicInteger counter = new AtomicInteger(0);
+        byte[] unpack = domainParsed.unpack(bytes, fieldDefinition, counter);
+        Assertions.assertEquals(BytesUtil.bytesToHex(unpack), "1E2E3E4E5E");
+    }
+
+    @Test
+    @DisplayName("unpack() BCD length奇数")
+    void test09() {
+        IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
+        fieldDefinition.setParseType(FieldDefinition.ParseType.BCD);
+        fieldDefinition.setFixed(false);
+        fieldDefinition.setLength(1);
+        fieldDefinition.setMaxLength(10);
+        byte[] bytes = BytesUtil.hexToBytes("101234567890");
         AtomicInteger counter = new AtomicInteger(0);
         byte[] unpack = domainParsed.unpack(bytes, fieldDefinition, counter);
         Assertions.assertEquals(BytesUtil.bytesToHex(unpack), "1E2E3E4E5E");
