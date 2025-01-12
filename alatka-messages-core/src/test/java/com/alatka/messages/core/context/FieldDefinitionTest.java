@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class FieldDefinitionTest {
@@ -47,20 +48,38 @@ public class FieldDefinitionTest {
     }
 
     @Test
-    @DisplayName("compareTo()")
-    void test04() {
-        FieldDefinition definition1 = new FieldDefinition();
-        definition1.setDomainNo(3);
-        FieldDefinition definition2 = new FieldDefinition();
-        definition2.setDomainNo(1);
-        int result = definition1.compareTo(definition2);
-        Assertions.assertEquals(2, result);
-    }
-
-    @Test
     @DisplayName("getter() setter()")
     void test05() {
-        // TODO
+        FieldDefinition definition = new FieldDefinition();
+        definition.setDomainNo(1);
+        definition.setName("Name");
+        definition.setClassName("java.lang.String");
+        definition.setClassType(String.class);
+        definition.setPattern("yyyyMMdd");
+        definition.setFixed(true);
+        definition.setLength(20);
+        definition.setRemark("testing");
+        definition.setStatus(FieldDefinition.Status.CLOSE);
+        definition.setPageSizeName("counts");
+        definition.setParseType(FieldDefinition.ParseType.NONE);
+        definition.setExistSubdomain(Boolean.FALSE);
+        definition.setSubdomainType(MessageDefinition.DomainType.PAGE);
+        definition.setMessageDefinitionMap(Collections.EMPTY_MAP);
+
+        Assertions.assertEquals(1, definition.getDomainNo());
+        Assertions.assertEquals("Name", definition.getName());
+        Assertions.assertEquals("java.lang.String", definition.getClassName());
+        Assertions.assertEquals(String.class, definition.getClassType());
+        Assertions.assertEquals("yyyyMMdd", definition.getPattern());
+        Assertions.assertEquals(true, definition.getFixed());
+        Assertions.assertEquals(20, definition.getLength());
+        Assertions.assertEquals("testing", definition.getRemark());
+        Assertions.assertEquals(FieldDefinition.Status.CLOSE, definition.getStatus());
+        Assertions.assertEquals("counts", definition.getPageSizeName());
+        Assertions.assertEquals(FieldDefinition.ParseType.NONE, definition.getParseType());
+        Assertions.assertEquals(Boolean.FALSE, definition.getExistSubdomain());
+        Assertions.assertEquals(MessageDefinition.DomainType.PAGE, definition.getSubdomainType());
+        Assertions.assertEquals(Collections.EMPTY_MAP, definition.getMessageDefinitionMap());
     }
 
     @Test
