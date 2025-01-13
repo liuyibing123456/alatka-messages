@@ -106,16 +106,32 @@ public class LVDomainParsedTest {
     }
 
     @Test
-    @DisplayName("unpack() BCD length奇数")
+    @DisplayName("unpack() BCD length偶数")
     void test09() {
         IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
         fieldDefinition.setParseType(FieldDefinition.ParseType.BCD);
+        fieldDefinition.setLenParseType(FieldDefinition.ParseType.BINARY);
         fieldDefinition.setFixed(false);
         fieldDefinition.setLength(1);
         fieldDefinition.setMaxLength(10);
-        byte[] bytes = BytesUtil.hexToBytes("101234567890");
+        byte[] bytes = BytesUtil.hexToBytes("0A1234567890");
         AtomicInteger counter = new AtomicInteger(0);
         byte[] unpack = domainParsed.unpack(bytes, fieldDefinition, counter);
-        Assertions.assertEquals(BytesUtil.bytesToHex(unpack), "1E2E3E4E5E");
+        Assertions.assertEquals("1234567890", BytesUtil.bytesToHex(unpack));
+    }
+
+    @Test
+    @DisplayName("unpack() BCD length奇数")
+    void test10() {
+        IsoFieldDefinition fieldDefinition = new IsoFieldDefinition();
+        fieldDefinition.setParseType(FieldDefinition.ParseType.BCD);
+        fieldDefinition.setLenParseType(FieldDefinition.ParseType.BINARY);
+        fieldDefinition.setFixed(false);
+        fieldDefinition.setLength(1);
+        fieldDefinition.setMaxLength(10);
+        byte[] bytes = BytesUtil.hexToBytes("090123456789");
+        AtomicInteger counter = new AtomicInteger(0);
+        byte[] unpack = domainParsed.unpack(bytes, fieldDefinition, counter);
+        Assertions.assertEquals("0123456789", BytesUtil.bytesToHex(unpack));
     }
 }
