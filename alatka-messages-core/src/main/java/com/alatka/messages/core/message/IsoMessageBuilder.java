@@ -12,11 +12,11 @@ import java.util.Map;
  *
  * @author ybliu
  */
-public class PayloadMessageBuilder extends MessageBuilder {
+public class IsoMessageBuilder extends MessageBuilder {
 
     private final ThreadLocal<Map<Integer, Boolean>> bitmap = new ThreadLocal<>();
 
-    public PayloadMessageBuilder(MessageDefinition definition) {
+    public IsoMessageBuilder(MessageDefinition definition) {
         super.definition = definition;
     }
 
