@@ -54,23 +54,20 @@ public class BitmapFieldBuilder extends AbstractFieldBuilder<Map<Integer, Boolea
                                 FieldDefinition::getDomainNo,
                                 definition -> MessageHolderUtil.getByName(messageHolder.get(), definition.getName()) != null));
 
-                int length = fieldDefinition.getFixed() ? fieldDefinition.getLength() :
-                        (list.stream()
-                                .sorted(Comparator.comparing(FieldDefinition::getDomainNo).reversed())
-                                .filter(definition -> MessageHolderUtil.getByName(messageHolder.get(), definition.getName()) != null)
-                                .map(FieldDefinition::getDomainNo)
-                                .findFirst()
-                                .orElseThrow(() -> new RuntimeException("bitmap is 0")) <= 64 ? 8 : 16);
-                // 1域
-                bitmap.put(1, length == 16);
-                // 2-64/128域
-                if (length == 8) {
-                    bitmap.keySet().removeIf(key -> key > 64);
+                int length = 0;
+                if (fieldDefinition.getFixed()) {
+                    length = fieldDefinition.getLength();
+                } else {
+                    Integer lastDomainNo = list.stream()
+                            .sorted(Comparator.comparing(FieldDefinition::getDomainNo).reversed())
+                            .filter(definition -> MessageHolderUtil.getByName(messageHolder.get(), definition.getName()) != null)
+                            .map(FieldDefinition::getDomainNo)
+                            .findFirst()
+                            .orElseThrow(() -> new RuntimeException("bitmap is 0"));
+                    length = this.calculateLength(lastDomainNo, 1);
                 }
-                IntStream.range(2, length * 8 + 1)
-                        .boxed()
-                        .filter(i -> !bitmap.containsKey(i))
-                        .forEach(i -> bitmap.put(i, false));
+
+                this.postBitmap(bitmap, length, 1);
                 value = bitmap;
             } finally {
                 messageHolder.remove();
@@ -101,5 +98,26 @@ public class BitmapFieldBuilder extends AbstractFieldBuilder<Map<Integer, Boolea
     @Override
     public void setMessageHolder(Object instance) {
         this.messageHolder.set(instance);
+    }
+
+    private int calculateLength(Integer lastDomainNo, int times) {
+        if (lastDomainNo <= 64 * times) {
+            return 8 * times;
+        }
+        return this.calculateLength(lastDomainNo, times + 1);
+    }
+
+    private void postBitmap(Map<Integer, Boolean> bitmap, int length, int times) {
+        if (8 * times < length) {
+            bitmap.put((times - 1) * 64 + 1, true);
+            this.postBitmap(bitmap, length, times + 1);
+        } else {
+            bitmap.keySet().removeIf(key -> key.compareTo(length * 8) > 0);
+
+            IntStream.range(1, length * 8 + 1)
+                    .boxed()
+                    .filter(i -> !bitmap.containsKey(i))
+                    .forEach(i -> bitmap.put(i, false));
+        }
     }
 }
