@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BitmapDomainParsedTest {
@@ -30,7 +29,6 @@ public class BitmapDomainParsedTest {
 
         FieldDefinition fieldDefinition = new FieldDefinition();
         fieldDefinition.setDomainNo(1);
-        fieldDefinition.setClassType(Map.class);
 
         boolean matched = domainParsed.matched(messageDefinition, fieldDefinition);
 

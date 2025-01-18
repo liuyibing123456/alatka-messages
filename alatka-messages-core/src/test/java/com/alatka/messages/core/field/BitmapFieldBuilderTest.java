@@ -28,7 +28,6 @@ public class BitmapFieldBuilderTest {
     @DisplayName("matched()")
     void test02() {
         FieldDefinition fieldDefinition = new FieldDefinition();
-        fieldDefinition.setClassType(Map.class);
         fieldDefinition.setDomainNo(1);
         MessageDefinition messageDefinition = new MessageDefinition();
         messageDefinition.setType(MessageDefinition.Type.iso);

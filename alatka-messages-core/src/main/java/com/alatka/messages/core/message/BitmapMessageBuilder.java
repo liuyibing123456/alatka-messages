@@ -6,36 +6,34 @@ import com.alatka.messages.core.holder.Bitmap;
 import com.alatka.messages.core.holder.MessageHolderUtil;
 
 /**
- * 8583 payload报文打包/解包器
+ * bitmap类型子域报文打包/解包器
  *
  * @author ybliu
  */
-public class IsoMessageBuilder extends MessageBuilder {
+public class BitmapMessageBuilder extends MessageBuilder {
 
-    private final ThreadLocal<Bitmap> bitmap = new ThreadLocal<>();
+    private static final String BITMAP_NAME = "bitmap";
 
-    public IsoMessageBuilder(MessageDefinition definition) {
+    private Bitmap bitmap;
+
+    public BitmapMessageBuilder(MessageDefinition definition) {
         super.definition = definition;
     }
 
     @Override
     protected boolean filter(FieldDefinition fieldDefinition) {
-        return fieldDefinition.getDomainNo() <= 1 || this.bitmap.get().exist(fieldDefinition.getDomainNo());
+        return fieldDefinition.getDomainNo() < 1 || this.bitmap.exist(fieldDefinition.getDomainNo());
     }
 
     @Override
     protected void postProcess(FieldDefinition fieldDefinition, Object instance, Object value, boolean packed) {
-        if (fieldDefinition.getDomainNo() == 1) {
+        if (fieldDefinition.getName().equals(BITMAP_NAME)) {
             if (packed) {
-                this.bitmap.set(new Bitmap((byte[]) value, 0));
+                this.bitmap = new Bitmap((byte[]) value, 0);
             } else {
-                this.bitmap.set(MessageHolderUtil.getByDomainNo(definition, instance, 1));
+                this.bitmap = MessageHolderUtil.getByName(instance, BITMAP_NAME);
             }
         }
     }
 
-    @Override
-    protected void postProcess() {
-        this.bitmap.remove();
-    }
 }

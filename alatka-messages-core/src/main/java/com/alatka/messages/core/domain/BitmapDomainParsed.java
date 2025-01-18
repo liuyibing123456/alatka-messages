@@ -4,7 +4,6 @@ import com.alatka.messages.core.context.FieldDefinition;
 import com.alatka.messages.core.context.MessageDefinition;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -25,8 +24,7 @@ public class BitmapDomainParsed extends AbstractDomainParsed {
     public boolean matched(MessageDefinition messageDefinition, FieldDefinition fieldDefinition) {
         return MessageDefinition.Type.iso == messageDefinition.getType()
                 && MessageDefinition.Kind.payload == messageDefinition.getKind()
-                && fieldDefinition.getDomainNo() == 1
-                && Map.class.isAssignableFrom(fieldDefinition.getClassType());
+                && fieldDefinition.getDomainNo() == 1;
     }
 
     @Override
