@@ -3,7 +3,6 @@ package com.alatka.messages.core.message;
 import com.alatka.messages.core.context.FieldDefinition;
 import com.alatka.messages.core.context.MessageDefinition;
 import com.alatka.messages.core.holder.Bitmap;
-import com.alatka.messages.core.holder.MessageHolderUtil;
 
 /**
  * bitmap类型子域报文打包/解包器
@@ -24,12 +23,14 @@ public class BitmapSubdomainMessageBuilder extends MessageBuilder {
     }
 
     @Override
-    protected void postProcess(FieldDefinition fieldDefinition, Object instance, Object value, boolean packed) {
+    protected void postProcess(FieldDefinition fieldDefinition, Object value, boolean packed) {
         if (fieldDefinition.getClassType() == Bitmap.class) {
             if (packed) {
-                this.bitmap.set(new Bitmap((byte[]) value));
+                String offset = fieldDefinition.getPattern();
+                byte[] bytes = (byte[]) value;
+                this.bitmap.set(offset == null || offset.isEmpty() ? new Bitmap(bytes) : new Bitmap(bytes, Integer.parseInt(offset)));
             } else {
-                this.bitmap.set(MessageHolderUtil.getByName(instance, fieldDefinition.getName()));
+                this.bitmap.set((Bitmap) value);
             }
         }
     }

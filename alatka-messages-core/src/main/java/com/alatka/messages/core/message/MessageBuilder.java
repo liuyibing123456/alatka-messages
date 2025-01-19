@@ -77,7 +77,7 @@ public abstract class MessageBuilder {
                         throw new RuntimeException(definition + " -> " + fieldDefinition + "解析报错", e);
                     }
                 })
-                .peek(wrapper -> this.postProcess(wrapper.fieldDefinition, instance, wrapper.value, true))
+                .peek(wrapper -> this.postProcess(wrapper.fieldDefinition, wrapper.value, true))
                 .map(wrapper -> (byte[]) wrapper.value)
                 .reduce(new byte[0], this::concatBytes);
         this.postProcess();
@@ -117,7 +117,7 @@ public abstract class MessageBuilder {
                     } catch (Exception e) {
                         throw new RuntimeException(definition + " -> " + fieldDefinition + "解析报错", e);
                     }
-                }).forEach(wrapper -> this.postProcess(wrapper.fieldDefinition, instance, wrapper.value, false));
+                }).forEach(wrapper -> this.postProcess(wrapper.fieldDefinition, wrapper.value, false));
         this.postProcess();
         return (T) instance;
     }
@@ -162,11 +162,10 @@ public abstract class MessageBuilder {
      * 后处理
      *
      * @param fieldDefinition {@link FieldDefinition}
-     * @param instance        对象实例
      * @param value           字段值
      * @param packed          打包/解包
      */
-    protected void postProcess(FieldDefinition fieldDefinition, Object instance, Object value, boolean packed) {
+    protected void postProcess(FieldDefinition fieldDefinition, Object value, boolean packed) {
     }
 
     protected void postProcess() {

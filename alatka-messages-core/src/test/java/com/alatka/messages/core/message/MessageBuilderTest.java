@@ -53,7 +53,7 @@ public class MessageBuilderTest {
     @DisplayName("postProcess(FieldDefinition, Object, Object, boolean)")
     void test03() {
         // TODO
-        messageBuilder.postProcess(null, null, null, false);
+        messageBuilder.postProcess(null, null, false);
     }
 
     @Test
