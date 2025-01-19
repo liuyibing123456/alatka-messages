@@ -27,7 +27,7 @@ public abstract class AbstractBitmapFieldBuilder extends AbstractFieldBuilder<Bi
     @Override
     protected Bitmap toObjectWithBinary(byte[] bytes, FieldDefinition fieldDefinition) {
         String offset = fieldDefinition.getPattern();
-        return new Bitmap(bytes, offset == null ? 0 : Integer.parseInt(offset));
+        return offset == null || offset.isEmpty() ? new Bitmap(bytes) : new Bitmap(bytes, Integer.parseInt(offset));
     }
 
     @Override
@@ -42,7 +42,8 @@ public abstract class AbstractBitmapFieldBuilder extends AbstractFieldBuilder<Bi
 
             int length = this.calculateLength(instance, list, fieldDefinition);
 
-            int offset = fieldDefinition.getPattern() == null ? 0 : Integer.parseInt(fieldDefinition.getPattern());
+            int offset = fieldDefinition.getPattern() == null || fieldDefinition.getPattern().isEmpty() ?
+                    0 : Integer.parseInt(fieldDefinition.getPattern());
 
             byte[] bytes = new byte[length];
             list.stream()
@@ -50,10 +51,7 @@ public abstract class AbstractBitmapFieldBuilder extends AbstractFieldBuilder<Bi
                     .filter(definition -> definition.getDomainNo() - offset <= length * 8)
                     .filter(definition -> MessageHolderUtil.getByName(instance, definition.getName()) != null)
                     .map(FieldDefinition::getDomainNo)
-                    .forEach(domainNo -> {
-                        Integer index = domainNo - offset - 1;
-                        bytes[index / 8] |= 0x80 >> (index % 8);
-                    });
+                    .forEach(domainNo -> bytes[(domainNo - offset - 1) / 8] |= 0x80 >>> ((domainNo - offset - 1) % 8));
 
             this.postBitmap(bytes);
 

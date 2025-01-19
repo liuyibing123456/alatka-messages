@@ -59,6 +59,9 @@ public abstract class MessageBuilder {
         if (definition.getDomainType() == MessageDefinition.DomainType.TLV2) {
             return new TLV2SubdomainMessageBuilder(definition);
         }
+        if (definition.getDomainType() == MessageDefinition.DomainType.BITMAP) {
+            return new BitmapSubdomainMessageBuilder(definition);
+        }
         return new DefaultMessageBuilder(definition);
     }
 

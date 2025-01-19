@@ -27,7 +27,7 @@ public class IsoMessageBuilder extends MessageBuilder {
     protected void postProcess(FieldDefinition fieldDefinition, Object instance, Object value, boolean packed) {
         if (fieldDefinition.getDomainNo() == 1) {
             if (packed) {
-                this.bitmap.set(new Bitmap((byte[]) value, 0));
+                this.bitmap.set(new Bitmap((byte[]) value));
             } else {
                 this.bitmap.set(MessageHolderUtil.getByDomainNo(definition, instance, 1));
             }

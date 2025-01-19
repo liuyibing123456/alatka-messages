@@ -10,30 +10,32 @@ import com.alatka.messages.core.holder.MessageHolderUtil;
  *
  * @author ybliu
  */
-public class BitmapMessageBuilder extends MessageBuilder {
+public class BitmapSubdomainMessageBuilder extends MessageBuilder {
 
-    private static final String BITMAP_NAME = "bitmap";
+    private final ThreadLocal<Bitmap> bitmap = new ThreadLocal<>();
 
-    private Bitmap bitmap;
-
-    public BitmapMessageBuilder(MessageDefinition definition) {
+    public BitmapSubdomainMessageBuilder(MessageDefinition definition) {
         super.definition = definition;
     }
 
     @Override
     protected boolean filter(FieldDefinition fieldDefinition) {
-        return fieldDefinition.getDomainNo() < 1 || this.bitmap.exist(fieldDefinition.getDomainNo());
+        return this.bitmap.get() == null || this.bitmap.get().exist(fieldDefinition.getDomainNo());
     }
 
     @Override
     protected void postProcess(FieldDefinition fieldDefinition, Object instance, Object value, boolean packed) {
-        if (fieldDefinition.getName().equals(BITMAP_NAME)) {
+        if (fieldDefinition.getClassType() == Bitmap.class) {
             if (packed) {
-                this.bitmap = new Bitmap((byte[]) value, 0);
+                this.bitmap.set(new Bitmap((byte[]) value));
             } else {
-                this.bitmap = MessageHolderUtil.getByName(instance, BITMAP_NAME);
+                this.bitmap.set(MessageHolderUtil.getByName(instance, fieldDefinition.getName()));
             }
         }
     }
 
+    @Override
+    protected void postProcess() {
+        this.bitmap.remove();
+    }
 }

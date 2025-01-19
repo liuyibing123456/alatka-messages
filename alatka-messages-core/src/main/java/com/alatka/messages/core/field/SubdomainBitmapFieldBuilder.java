@@ -2,12 +2,13 @@ package com.alatka.messages.core.field;
 
 import com.alatka.messages.core.context.FieldDefinition;
 import com.alatka.messages.core.context.MessageDefinition;
+import com.alatka.messages.core.holder.Bitmap;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 子域bitmap报文域解析器
+ * 参考visa 62.0域
  *
  * @author ybliu
  * @see AbstractFieldBuilder
@@ -18,8 +19,8 @@ public class SubdomainBitmapFieldBuilder extends AbstractBitmapFieldBuilder {
     @Override
     public boolean matched(MessageDefinition messageDefinition, FieldDefinition definition) {
         return MessageDefinition.Type.iso == messageDefinition.getType()
-                && MessageDefinition.Kind.subPayload == messageDefinition.getKind()
-                && definition.getDomainNo() == 0;
+                && definition.getClassType() == Bitmap.class
+                && (MessageDefinition.Kind.subPayload == messageDefinition.getKind() || MessageDefinition.Kind.header == messageDefinition.getKind());
     }
 
     @Override
