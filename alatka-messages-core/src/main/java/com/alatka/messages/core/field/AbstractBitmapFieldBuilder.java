@@ -51,7 +51,7 @@ public abstract class AbstractBitmapFieldBuilder extends AbstractFieldBuilder<Bi
                     .filter(definition -> definition.getDomainNo() - offset <= length * 8)
                     .filter(definition -> MessageHolderUtil.getByName(instance, definition.getName()) != null)
                     .map(FieldDefinition::getDomainNo)
-                    .forEach(domainNo -> bytes[(domainNo - offset - 1) / 8] |= 0x80 >>> ((domainNo - offset - 1) % 8));
+                    .forEach(domainNo -> bytes[(domainNo - offset - 1) / 8] |= (byte) (0x80 >>> ((domainNo - offset - 1) % 8)));
 
             this.postBitmap(bytes);
 

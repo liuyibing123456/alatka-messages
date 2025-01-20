@@ -21,6 +21,9 @@ public class IsoMessageBuilderTest {
         MessageDefinition definition = new MessageDefinition();
         IsoMessageBuilder messageBuilder = new IsoMessageBuilder(definition);
         FieldDefinition fieldDefinition = new FieldDefinition();
+        fieldDefinition.setDomainNo(0);
+        Assertions.assertTrue(messageBuilder.filter(fieldDefinition));
+
         fieldDefinition.setDomainNo(1);
         Assertions.assertTrue(messageBuilder.filter(fieldDefinition));
     }

@@ -51,7 +51,7 @@ public class BitmapFieldBuilder extends AbstractBitmapFieldBuilder {
 
     private void doPostBitmap(byte[] bytes, int length, int times) {
         if (8 * times < length) {
-            bytes[times - 1] |= 0x80;
+            bytes[times - 1] |= (byte) 0x80;
             this.doPostBitmap(bytes, length, times + 1);
         } else {
             bytes[times - 1] &= 0x7F;

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BitmapDomainParsedTest {
 
-    private BitmapDomainParsed domainParsed = new BitmapDomainParsed();
+    private final BitmapDomainParsed domainParsed = new BitmapDomainParsed();
 
     @Test
     @DisplayName("getOrder() == 100")
@@ -57,6 +57,16 @@ public class BitmapDomainParsedTest {
     @DisplayName("unpack() 128bit")
     void test05() {
         String hex = "8A435E3567A123456A435E3567A12345";
+        AtomicInteger counter = new AtomicInteger(0);
+
+        byte[] pack = domainParsed.unpack(BytesUtil.hexToBytes(hex), null, counter);
+        Assertions.assertEquals(BytesUtil.bytesToHex(pack), hex);
+    }
+
+    @Test
+    @DisplayName("unpack() 192bit")
+    void test06() {
+        String hex = "8A435E3567A123458A435E3567A123456A435E3567A12345";
         AtomicInteger counter = new AtomicInteger(0);
 
         byte[] pack = domainParsed.unpack(BytesUtil.hexToBytes(hex), null, counter);
